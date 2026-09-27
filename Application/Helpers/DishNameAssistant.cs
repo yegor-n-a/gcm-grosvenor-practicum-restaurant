@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -7,39 +6,27 @@ namespace Application.Helpers
 {
     public static class DishNameAssistant
     {
-        public static ImmutableDictionary<string, DishName> DishNamesMapping { get; } = ImmutableDictionary.CreateRange(
-            StringComparer.OrdinalIgnoreCase,
-            new Dictionary<string, DishName>
-            {
-                { DishName.Egg.Name, DishName.Egg },
-                { DishName.Steak.Name, DishName.Steak },
-                { DishName.Toast.Name, DishName.Toast },
-                { DishName.Potato.Name, DishName.Potato },
-                { DishName.Coffee.Name, DishName.Coffee },
-                { DishName.Wine.Name, DishName.Wine },
-                { DishName.Cake.Name, DishName.Cake }
-            });
+        private static bool IgnoreCase { get; } = true;
 
-        public static ImmutableDictionary<string, DishType> DishNamesToTypesMapping { get; } = ImmutableDictionary.CreateRange(
-            StringComparer.OrdinalIgnoreCase,
-            new Dictionary<string, DishType>
+        public static ImmutableDictionary<DishName, DishType> DishNamesToTypesMapping { get; } = ImmutableDictionary.CreateRange(
+            new Dictionary<DishName, DishType>
             {
-                { DishName.Egg.Name, DishType.Entree },
-                { DishName.Steak.Name, DishType.Entree },
-                { DishName.Toast.Name, DishType.Side },
-                { DishName.Potato.Name, DishType.Side },
-                { DishName.Coffee.Name, DishType.Drink },
-                { DishName.Wine.Name, DishType.Drink },
-                { DishName.Cake.Name, DishType.Dessert }
+                { DishName.Egg, DishType.Entree },
+                { DishName.Steak, DishType.Entree },
+                { DishName.Toast, DishType.Side },
+                { DishName.Potato, DishType.Side },
+                { DishName.Coffee, DishType.Drink },
+                { DishName.Wine, DishType.Drink },
+                { DishName.Cake, DishType.Dessert }
             });
 
         public static DishName GetName(string name)
         {
-            name = name?.Trim().ToLowerInvariant();
+            name = name?.Trim();
 
             if (string.IsNullOrWhiteSpace(name)) return DishName.None;
 
-            var success = DishNamesMapping.TryGetValue(name, out var nameValue);
+            var success = DishName.TryFromName(name, IgnoreCase, out var nameValue);
 
             return success
                 ? nameValue
@@ -48,20 +35,18 @@ namespace Application.Helpers
 
         public static DishType GetType(DishName name)
         {
-            return GetType(name.Name);
-        }
-
-        public static DishType GetType(string name)
-        {
-            name = name?.Trim().ToLowerInvariant();
-
-            if (string.IsNullOrWhiteSpace(name)) return DishType.None;
-
             var success = DishNamesToTypesMapping.TryGetValue(name, out var type);
 
             return success
                 ? type
                 : DishType.None;
+        }
+
+        public static DishType GetType(string name)
+        {
+            var dishName = GetName(name);
+
+            return GetType(dishName);
         }
     }
 }

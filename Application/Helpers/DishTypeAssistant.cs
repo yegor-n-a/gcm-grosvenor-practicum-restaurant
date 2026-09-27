@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -7,15 +6,7 @@ namespace Application.Helpers
 {
     public static class DishTypeAssistant
     {
-        public static ImmutableDictionary<string, DishType> DishTypesMapping { get; } = ImmutableDictionary.CreateRange(
-            StringComparer.OrdinalIgnoreCase,
-            new Dictionary<string, DishType>
-            {
-                { DishType.Entree.Name, DishType.Entree },
-                { DishType.Side.Name, DishType.Side },
-                { DishType.Drink.Name, DishType.Drink },
-                { DishType.Dessert.Name, DishType.Dessert }
-            });
+        private static bool IgnoreCase { get; } = true;
 
         public static ImmutableDictionary<DishType, decimal> DishTypePositions { get; } = ImmutableDictionary.CreateRange(
             new Dictionary<DishType, decimal>
@@ -28,11 +19,11 @@ namespace Application.Helpers
 
         public static DishType GetType(string type)
         {
-            type = type?.Trim().ToLowerInvariant();
+            type = type?.Trim();
 
             if (string.IsNullOrWhiteSpace(type)) return DishType.None;
 
-            var success = DishTypesMapping.TryGetValue(type, out var typeValue);
+            var success = DishType.TryFromName(type, IgnoreCase, out var typeValue);
 
             return success
                 ? typeValue
