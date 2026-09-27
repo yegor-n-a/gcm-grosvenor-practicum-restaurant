@@ -32,7 +32,7 @@ namespace Application.Helpers
 
         public static decimal? GetPosition(DishType type)
         {
-            var success = DishTypePositions.TryGetValue(type, out var position);
+            var success = DishTypesToPositionsMapper.TryGetValue(type, out var position);
 
             return success
                 ? position

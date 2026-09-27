@@ -2,9 +2,9 @@
 
 namespace Application.Builders
 {
-    public interface IDishDescriptorBuilder : IBuilder<DishDescriptor, string>
+    public interface IDishDescriptorBuilder : IBuilder<DishDescriptor, int>
     {
-        public DishName BuildName(string name);
+        public DishName BuildName(int id);
         public DishType BuildType(DishName name);
         public decimal? BuildPosition(DishType type);
     }

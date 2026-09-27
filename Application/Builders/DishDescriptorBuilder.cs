@@ -23,9 +23,9 @@ namespace Application.Builders
             DishTypeToPositionMapper = dishTypeToPositionMapper;
         }
 
-        public DishName BuildName(string dishName)
+        public DishName BuildName(int dishId)
         {
-            return DishNameResolver.Resolve(dishName);
+            return DishNameResolver.Resolve(dishId);
         }
 
         public DishType BuildType(DishName dishName)
@@ -33,9 +33,9 @@ namespace Application.Builders
             return DishNameToTypeMapper.Map(dishName);
         }
 
-        public DishType BuildType(string dishName)
+        public DishType BuildType(int dishId)
         {
-            var nameValue = BuildName(dishName);
+            var nameValue = BuildName(dishId);
 
             return BuildType(nameValue);
         }
@@ -52,9 +52,9 @@ namespace Application.Builders
             return BuildPosition(typeValue);
         }
 
-        public DishDescriptor Build(string source)
+        public DishDescriptor Build(int dishId)
         {
-            var dishName = BuildName(source);
+            var dishName = BuildName(dishId);
 
             if (dishName == DishName.None) return null;
 

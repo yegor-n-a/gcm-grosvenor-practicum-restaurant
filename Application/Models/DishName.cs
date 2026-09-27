@@ -1,8 +1,9 @@
-﻿using Ardalis.SmartEnum;
+﻿using Application.Interfaces.General;
+using Ardalis.SmartEnum;
 
 namespace Application.Models
 {
-    public sealed class DishName : SmartEnum<DishName>
+    public sealed class DishName : SmartEnum<DishName>, IDefaultPrimitive<DishName>
     {
         public static DishName None { get; } = new DishName(nameof(None), 0);
         public static DishName Egg { get; } = new DishName(nameof(Egg), 1);
@@ -12,6 +13,8 @@ namespace Application.Models
         public static DishName Potato { get; } = new DishName(nameof(Potato), 5);
         public static DishName Wine { get; } = new DishName(nameof(Wine), 6);
         public static DishName Cake { get; } = new DishName(nameof(Cake), 7);
+        
+        public DishName Default { get; set; } = None;
 
         private DishName(string name, int value) : base(name, value)
         { }
