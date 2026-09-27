@@ -8,7 +8,7 @@ namespace Application.Helpers
     {
         private static bool IgnoreCase { get; } = true;
 
-        public static ImmutableDictionary<DishType, decimal> DishTypePositions { get; } = ImmutableDictionary.CreateRange(
+        public static ImmutableDictionary<DishType, decimal> DishTypesToPositionsMapper { get; } = ImmutableDictionary.CreateRange(
             new Dictionary<DishType, decimal>
             {
                 { DishType.Entree, 1 },
