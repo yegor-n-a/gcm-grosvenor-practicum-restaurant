@@ -1,0 +1,6 @@
+﻿using Application.Interfaces.General;
+
+namespace Application.Models
+{
+    public interface IDishDescriptor : INamedItem<DishName>, ITypedItem<DishType>, IPositionedItem<decimal?> { }
+}
