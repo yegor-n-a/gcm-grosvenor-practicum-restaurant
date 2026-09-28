@@ -1,7 +1,7 @@
 ﻿using Application.Models;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 
 namespace Application.Mappers
 {
-    public interface IPartOfTheDayToMenuItemsMapper : IDishMapper<PartOfTheDay, ImmutableList<int>> { }
+    public interface IPartOfTheDayToMenuItemsMapper : IDishMapper<PartOfTheDay, IDictionary<int, string>> { }
 }

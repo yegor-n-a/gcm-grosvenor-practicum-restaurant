@@ -4,23 +4,27 @@ using System.Collections.Immutable;
 
 namespace Application.Mappers
 {
-    public class PartOfTheDayToMenuItemsMapper : DishMapper<PartOfTheDay, ImmutableList<int>>, IPartOfTheDayToMenuItemsMapper
+    public class PartOfTheDayToMenuItemsMapper : DishMapper<PartOfTheDay, IDictionary<int, string>>, IPartOfTheDayToMenuItemsMapper
     {
-        public override IDictionary<PartOfTheDay, ImmutableList<int>> Mappings { get; } = ImmutableDictionary.CreateRange(
-            new Dictionary<PartOfTheDay, ImmutableList<int>>
+        public override IDictionary<PartOfTheDay, IDictionary<int, string>> Mappings { get; } = ImmutableDictionary.CreateRange(
+            new Dictionary<PartOfTheDay, IDictionary<int, string>>
             {
                 { PartOfTheDay.Morning,
-                    ImmutableList.Create(
-                        DishName.Egg.Value,
-                        DishName.Toast.Value,
-                        DishName.Coffee.Value)
+                    new Dictionary<int, string>
+                    {
+                        { DishName.Egg.Value, DishName.Egg.Name },
+                        { DishName.Toast.Value, DishName.Toast.Name },
+                        { DishName.Coffee.Value, DishName.Coffee.Name }
+                    }
                 },
                 { PartOfTheDay.Evening,
-                    ImmutableList.Create(
-                        DishName.Steak.Value,
-                        DishName.Potato.Value,
-                        DishName.Wine.Value,
-                        DishName.Cake.Value)
+                    new Dictionary<int, string>
+                    {
+                        { DishName.Steak.Value, DishName.Steak.Name },
+                        { DishName.Potato.Value, DishName.Potato.Name },
+                        { DishName.Wine.Value, DishName.Wine.Name },
+                        { DishName.Cake.Value, DishName.Cake.Name }
+                    }
                 }
             });
     }

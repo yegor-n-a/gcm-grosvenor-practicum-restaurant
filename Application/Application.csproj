@@ -11,7 +11,6 @@
 
   <ItemGroup>
     <Folder Include="Formatters\" />
-    <Folder Include="Validators\" />
     <Folder Include="Printers\" />
   </ItemGroup>
 

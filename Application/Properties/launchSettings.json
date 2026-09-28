@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Application": {
+      "commandName": "Project",
+      "commandLineArgs": "-p \"morning\" -o \"1,2,3\""
+    }
+  }
+}
