@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Application.Validators
 {
-    public class DishValidator : AbstractValidator<_Dish>
+    public class DishValidator : AbstractValidator<Dish>
     {
         public DishValidator()
         {

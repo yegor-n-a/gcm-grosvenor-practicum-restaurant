@@ -31,19 +31,19 @@ namespace Application.Builders
             return dishAggregates.Values;
         }
 
-        public _Order<_Dish> Build(IEnumerable<int> dishIds)
+        public Order<Dish> Build(IEnumerable<int> dishIds)
         {
             if (dishIds.IsNullOrEmpty())
                 throw new ArgumentOutOfRangeException(nameof(dishIds), "Order cannot be empty");
 
             var aggregatedDishes = AggregateDishes(dishIds);
-            var dishes = new List<_Dish>(aggregatedDishes.Count());
+            var dishes = new List<Dish>(aggregatedDishes.Count());
 
             foreach (var dishAggregate in aggregatedDishes)
             {
                 var dishDescriptor = DishDescriptorBuilder.Build(dishAggregate.Id);
 
-                var dish = new _Dish
+                var dish = new Dish
                 {
                     Name = dishDescriptor.Name,
                     Type = dishDescriptor.Type,
@@ -54,7 +54,7 @@ namespace Application.Builders
                 dishes.Add(dish);
             }
 
-            return new _Order<_Dish>(dishes);
+            return new Order<Dish>(dishes);
         }
     }
 }

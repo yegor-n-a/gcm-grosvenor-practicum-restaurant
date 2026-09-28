@@ -1,7 +1,9 @@
 ﻿using Application;
+using Application.Models;
 using Application.Sorters;
 using Application.Validators;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,27 +24,24 @@ namespace ApplicationTests
         }
 
         [Test]
-        public void EmptyListReturnsEmptyList()
+        public void EmptyListThrowsArgumentOutOfRangeException()
         {
-            var order = new Order();
-            var actual = _sut.GetDishes(order);
-            Assert.AreEqual(0, actual.Count);
+            Assert.Throws<ArgumentOutOfRangeException>(() => new Order<Dish>(Enumerable.Empty<Dish>()));
         }
 
         [Test]
         public void ListWith1ReturnsOneSteak()
         {
-            var order = new Order
-            {
-                Dishes = new List<int>
+            var order = new Order<Dish>(
+                new List<Dish>
                 {
-                    1
-                }
-            };
+                    new Dish { Name = DishName.Steak, Count = 1 }
+                });
 
             var actual = _sut.GetDishes(order);
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual("steak", actual.First().DishName);
+
+            Assert.AreEqual(1, actual.Count());
+            Assert.AreEqual(DishName.Steak, actual.First().Name);
             Assert.AreEqual(1, actual.First().Count);
         }
     }
