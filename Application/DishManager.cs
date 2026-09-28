@@ -1,11 +1,52 @@
-﻿using System;
+﻿using Application.Validators;
+using Application.Models;
+using Application.Models.General;
+using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
+using Application.Sorters;
 
 namespace Application
 {
     public class DishManager : IDishManager
     {
+        public DishValidator DishValidator { get; }
+        public IDishSorter DishSorter { get; }
+
+        public DishManager(
+            DishValidator dishValidator,
+            IDishSorter dishSorter)
+        {
+            DishValidator = dishValidator;
+            DishSorter = dishSorter;
+        }
+
+        public IEnumerable<_Dish> _GetDishes(_Order<_Dish> order)
+        {
+            foreach (var dish in order.Dishes)
+            {
+                var validatedDish = DishValidator.Validate(dish);
+
+                if (!validatedDish.IsValid)
+                {
+                    foreach (var error in validatedDish.Errors)
+                    {
+                        Console.WriteLine($"Invalid dish '{dish.Name}'. Error: {error.ErrorMessage}");
+                    }
+                }
+                else
+                {
+                    yield return dish;
+                }
+            }
+        }
+
+        public ImmutableSortedSet<_Dish> _SortDishes(IEnumerable<_Dish> dishes, SortDirection sortDirection)
+        {
+            return DishSorter.Sort(dishes, sortDirection);
+        }
+
         /// <summary>
         /// Takes an Order object, sorts the orders and builds a list of dishes to be returned. 
         /// </summary>
@@ -33,7 +74,9 @@ namespace Application
         private void AddOrderToList(int order, List<Dish> returnValue)
         {
             string orderName = GetOrderName(order);
+
             var existingOrder = returnValue.SingleOrDefault(x => x.DishName == orderName);
+
             if (existingOrder == null)
             {
                 returnValue.Add(new Dish
@@ -41,7 +84,8 @@ namespace Application
                     DishName = orderName,
                     Count = 1
                 });
-            } else if (IsMultipleAllowed(order))
+            }
+            else if (IsMultipleAllowed(order))
             {
                 existingOrder.Count++;
             }
@@ -68,7 +112,6 @@ namespace Application
 
             }
         }
-
 
         private bool IsMultipleAllowed(int order)
         {

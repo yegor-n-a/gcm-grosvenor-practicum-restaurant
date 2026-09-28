@@ -8,9 +8,9 @@ using System.Linq;
 
 namespace Application.Sorters
 {
-    public class OrderSorter : IOrderSorter<DishDescriptor>
+    public class DishSorter : IDishSorter
     {
-        public ImmutableSortedSet<DishDescriptor> Sort(IEnumerable<DishDescriptor> source, SortDirection sortDirection)
+        public ImmutableSortedSet<_Dish> Sort(IEnumerable<_Dish> source, SortDirection sortDirection)
         {
             if (source.IsNullOrEmpty())
                 throw new ArgumentOutOfRangeException("Sorting failed: collection must contain at least one element");

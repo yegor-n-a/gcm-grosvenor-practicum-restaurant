@@ -1,7 +1,13 @@
 ﻿using Application;
-using NUnit.Framework;
+using Application.Builders;
 using Application.CommandLine;
+using Application.Mappers;
 using Application.Models;
+using Application.Parsers;
+using Application.Resolvers;
+using Application.Sorters;
+using Application.Validators;
+using NUnit.Framework;
 
 namespace ApplicationTests
 {
@@ -13,7 +19,30 @@ namespace ApplicationTests
         [SetUp]
         public void Setup()
         {
-            _sut = new Server(new DishManager());
+            var dishManager = new DishManager(
+                new DishValidator(),
+                new DishSorter()
+            );
+
+            var menuBuilder = new MenuBuilder(
+                new PartOfTheDayResolver(),
+                new PartOfTheDayToMenuItemsMapper()
+            );
+
+            var dishDescriptorBuilder = new DishDescriptorBuilder(
+                new DishNameResolver(),
+                new DishTypeResolver(),
+                new DishNameToTypeMapper(),
+                new DishTypeToPositionMapper(),
+                new DishNameToConstraintsMapper()
+            );
+
+            _sut = new Server(
+                dishManager,
+                new IntParser(),
+                menuBuilder,
+                new MenuValidator(),
+                new OrderBuilder(dishDescriptorBuilder));
         }
 
         [TearDown]

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Application.Models;
+using Application.Models.General;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Application
 {
@@ -11,5 +14,7 @@ namespace Application
         /// <param name="order"></param>
         /// <returns></returns>
         List<Dish> GetDishes(Order order);
+        IEnumerable<_Dish> _GetDishes(_Order<_Dish> order);
+        ImmutableSortedSet<_Dish> _SortDishes(IEnumerable<_Dish> dishes, SortDirection sortDirection);
     }
 }

@@ -34,7 +34,7 @@ namespace Application.Builders
             var items = PartOfTheDayToMenuItemsMapper.Map(partOfTheDay);
 
             if (items.IsNullOrEmpty())
-                throw new ArgumentException($"Menu: '{name}' does not contain any items.");
+                throw new ArgumentException($"Menu: '{name}' is not available.");
 
             return new Menu(items);
         }

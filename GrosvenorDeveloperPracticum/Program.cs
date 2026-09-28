@@ -1,5 +1,11 @@
 ﻿using Application;
+using Application.Builders;
 using Application.CommandLine;
+using Application.Mappers;
+using Application.Parsers;
+using Application.Resolvers;
+using Application.Sorters;
+using Application.Validators;
 using System;
 
 namespace GrosvenorInHousePracticum
@@ -10,11 +16,36 @@ namespace GrosvenorInHousePracticum
         {
             var orderRequest = CommandLineParser.Parse(args);
 
-            if (orderRequest == null) throw new ArgumentNullException("To proceed, you must specify part of the day & order");
+            if (orderRequest == null)
+                throw new ArgumentNullException("To proceed, you must specify part of the day & order");
 
-            var server = new Server(new DishManager());
+            var dishManager = new DishManager(
+                new DishValidator(),
+                new DishSorter()
+            );
+
+            var menuBuilder = new MenuBuilder(
+                new PartOfTheDayResolver(),
+                new PartOfTheDayToMenuItemsMapper()
+            );
+
+            var dishDescriptorBuilder = new DishDescriptorBuilder(
+                new DishNameResolver(),
+                new DishTypeResolver(),
+                new DishNameToTypeMapper(),
+                new DishTypeToPositionMapper(),
+                new DishNameToConstraintsMapper()
+            );
+
+            var server = new Server(
+                dishManager,
+                new IntParser(),
+                menuBuilder,
+                new MenuValidator(),
+                new OrderBuilder(dishDescriptorBuilder));
 
             var output = server.TakeOrder(orderRequest);
+
             Console.WriteLine(output);
         }
     }

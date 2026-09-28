@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Application;
+﻿using Application;
+using Application.Sorters;
+using Application.Validators;
 using NUnit.Framework;
-
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ApplicationTests
 {
@@ -14,7 +15,10 @@ namespace ApplicationTests
         [SetUp]
         public void Setup()
         {
-            _sut = new DishManager();
+            _sut = new DishManager(
+                new DishValidator(),
+                new DishSorter()
+            );
         }
 
         [Test]

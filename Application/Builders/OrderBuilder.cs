@@ -1,17 +1,20 @@
-﻿using Application.Models;
-using Application.Models.General;
-using Application.Parsers;
-using Application.Sorters;
+﻿using Application.Extensions;
+using Application.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Application.Builders
 {
     public class OrderBuilder : IOrderBuilder
     {
-        private IIntParser Parser { get; }
         private IDishDescriptorBuilder DishDescriptorBuilder { get; }
-        private IOrderSorter<_Dish> Sorter { get; }
+
+        public OrderBuilder(
+            IDishDescriptorBuilder dishDescriptorBuilder)
+        {
+            DishDescriptorBuilder = dishDescriptorBuilder;
+        }
 
         private IEnumerable<DishAggregate> AggregateDishes(IEnumerable<int> dishIds)
         {
@@ -28,9 +31,10 @@ namespace Application.Builders
             return dishAggregates.Values;
         }
 
-        public _Order<_Dish> Build(string source)
+        public _Order<_Dish> Build(IEnumerable<int> dishIds)
         {
-            var dishIds = Parser.Parse(source);
+            if (dishIds.IsNullOrEmpty())
+                throw new ArgumentOutOfRangeException(nameof(dishIds), "Order cannot be empty");
 
             var aggregatedDishes = AggregateDishes(dishIds);
             var dishes = new List<_Dish>(aggregatedDishes.Count());
@@ -50,19 +54,7 @@ namespace Application.Builders
                 dishes.Add(dish);
             }
 
-            var sortedDishes = Sorter.Sort(dishes, SortDirection.Ascending);
-
-            return new _Order<_Dish>(sortedDishes);
-        }
-
-        public OrderBuilder(
-            IIntParser parser,
-            IDishDescriptorBuilder dishDescriptorBuilder,
-            IOrderSorter<_Dish> sorter)
-        {
-            Parser = parser;
-            DishDescriptorBuilder = dishDescriptorBuilder;
-            Sorter = sorter;
+            return new _Order<_Dish>(dishes);
         }
     }
 }

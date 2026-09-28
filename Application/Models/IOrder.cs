@@ -4,6 +4,6 @@ namespace Application.Models
 {
     public interface IOrder<T>
     {
-        public ImmutableSortedSet<T> Dishes { get; }
+        public ImmutableArray<T> Dishes { get; }
     }
 }
