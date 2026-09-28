@@ -9,4 +9,10 @@
     <PackageReference Include="PowerArgs" Version="3.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Formatters\" />
+    <Folder Include="Validators\" />
+    <Folder Include="Printers\" />
+  </ItemGroup>
+
 </Project>
