@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Application
@@ -12,11 +13,11 @@ namespace Application
             _dishManager = dishManager;
         }
         
-        public string TakeOrder(string unparsedOrder)
+        public string TakeOrder(OrderRequest orderRequest)
         {
             try
             {
-                Order order = ParseOrder(unparsedOrder);
+                Order order = ParseOrder(orderRequest.Order);
                 List<Dish> dishes = _dishManager.GetDishes(order);
                 string returnValue = FormatOutput(dishes);
                 return returnValue;

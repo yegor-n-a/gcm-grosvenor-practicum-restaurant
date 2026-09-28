@@ -1,6 +1,8 @@
-﻿using Application.Mappers;
+﻿using Application.Extensions;
+using Application.Mappers;
 using Application.Models;
 using Application.Resolvers;
+using System;
 
 namespace Application.Builders
 {
@@ -26,9 +28,13 @@ namespace Application.Builders
         {
             var partOfTheDay = GetPartOfTheDay(name);
 
-            if (partOfTheDay == null) return null;
+            if (partOfTheDay == null)
+                throw new ArgumentException($"Menu: '{name}' not found.");
 
             var items = PartOfTheDayToMenuItemsMapper.Map(partOfTheDay);
+
+            if (items.IsNullOrEmpty())
+                throw new ArgumentException($"Menu: '{name}' does not contain any items.");
 
             return new Menu(items);
         }

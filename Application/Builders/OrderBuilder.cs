@@ -3,6 +3,7 @@ using Application.Models.General;
 using Application.Parsers;
 using Application.Sorters;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Builders
 {
@@ -12,26 +13,38 @@ namespace Application.Builders
         private IDishDescriptorBuilder DishDescriptorBuilder { get; }
         private IOrderSorter<_Dish> Sorter { get; }
 
+        private IEnumerable<DishAggregate> AggregateDishes(IEnumerable<int> dishIds)
+        {
+            var dishAggregates = new Dictionary<int, DishAggregate>();
+
+            foreach (var dishId in dishIds)
+            {
+                if (dishAggregates.ContainsKey(dishId))
+                    dishAggregates[dishId].Count++;
+                else
+                    dishAggregates[dishId] = new DishAggregate { Id = dishId, Count = 1 };
+            }
+
+            return dishAggregates.Values;
+        }
+
         public _Order<_Dish> Build(string source)
         {
             var dishIds = Parser.Parse(source);
 
-            var dishes = new List<_Dish>();
+            var aggregatedDishes = AggregateDishes(dishIds);
+            var dishes = new List<_Dish>(aggregatedDishes.Count());
 
-            foreach (var dishId in dishIds)
+            foreach (var dishAggregate in aggregatedDishes)
             {
-                var dishDescriptor = DishDescriptorBuilder.Build(dishId);
-
-                // TODO: Validate dishDescritor
-
-                // TODO: calculate and assign count
+                var dishDescriptor = DishDescriptorBuilder.Build(dishAggregate.Id);
 
                 var dish = new _Dish
                 {
                     Name = dishDescriptor.Name,
                     Type = dishDescriptor.Type,
                     Position = dishDescriptor.Position,
-                    Count = 1
+                    Count = dishAggregate.Count
                 };
 
                 dishes.Add(dish);

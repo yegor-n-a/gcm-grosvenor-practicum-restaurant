@@ -2,7 +2,7 @@
 
 namespace Application.CommandLine
 {
-    public class RestaurantCmdOptions
+    public class OrderCmdDetails
     {
         [
             ArgRequired(PromptIfMissing = true),

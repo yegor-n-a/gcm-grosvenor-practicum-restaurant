@@ -1,22 +1,23 @@
 ﻿using PowerArgs;
 using System;
+using Application.Models;
 
 namespace Application.CommandLine
 {
     public class CommandLineParser
     {
-        public static RestaurantCmdParams Parse(string[] args)
+        public static OrderRequest Parse(string[] args)
         {
             try
             {
-                var options = Args.Parse<RestaurantCmdOptions>(args);
+                var orderDetails = Args.Parse<OrderCmdDetails>(args);
 
-                return new RestaurantCmdParams(options);
+                return new OrderRequest(orderDetails);
             }
             catch (ArgException ex)
             {
                 Console.WriteLine(ex.Message);
-                Console.WriteLine(ArgUsage.GenerateUsageFromTemplate<RestaurantCmdOptions>());
+                Console.WriteLine(ArgUsage.GenerateUsageFromTemplate<OrderCmdDetails>());
                 return null;
             }
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Application.Extensions;
 
 namespace Application.Parsers
 {
@@ -26,6 +27,9 @@ namespace Application.Parsers
 
             var items = source.Split(separator)
                 .Where(item => !string.IsNullOrWhiteSpace(item));
+
+            if (items.IsNullOrEmpty())
+                throw new ArgumentOutOfRangeException(nameof(items), "Input must contain at least one number");
 
             foreach (var item in items)
             {

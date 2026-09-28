@@ -1,6 +1,7 @@
 ﻿using Application.Mappers;
 using Application.Models;
 using Application.Resolvers;
+using System;
 
 namespace Application.Builders
 {
@@ -56,11 +57,13 @@ namespace Application.Builders
         {
             var dishName = BuildName(dishId);
 
-            if (dishName == DishName.None) return null;
+            if (dishName == DishName.None)
+                throw new ArgumentException($"Dish with id = '{dishId}' not found.");
 
             var dishType = BuildType(dishName);
 
-            if (dishType == DishType.None) return null;
+            if (dishType == DishType.None)
+                throw new ArgumentException($"Dish: '{dishName}' does not have a valid type.");
 
             var position = BuildPosition(dishType);
 
