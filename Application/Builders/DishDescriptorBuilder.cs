@@ -1,6 +1,6 @@
-﻿using Application.Mappers;
+﻿using Application.Constraints;
+using Application.Mappers;
 using Application.Models;
-using Application.Constraints;
 using Application.Resolvers;
 using System;
 

@@ -1,5 +1,5 @@
-﻿using Application.Models.General;
-using Application.Constraints;
+﻿using Application.Constraints;
+using Application.Models.General;
 
 namespace Application.Models
 {

@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Application.Models;
+﻿using Application.Models;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace Application.Sorters

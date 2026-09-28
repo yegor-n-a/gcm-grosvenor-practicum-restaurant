@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Application.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using Application.Extensions;
 
 namespace Application.Models
 {

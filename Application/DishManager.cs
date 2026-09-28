@@ -1,11 +1,11 @@
-﻿using Application.Validators;
-using Application.Models;
+﻿using Application.Models;
 using Application.Models.General;
+using Application.Sorters;
+using Application.Validators;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Application.Sorters;
 
 namespace Application
 {

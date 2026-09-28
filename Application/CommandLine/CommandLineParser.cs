@@ -1,6 +1,6 @@
-﻿using PowerArgs;
+﻿using Application.Models;
+using PowerArgs;
 using System;
-using Application.Models;
 
 namespace Application.CommandLine
 {

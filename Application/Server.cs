@@ -67,7 +67,7 @@ namespace Application
                 var order = OrderBuilder.Build(availableItems);
 
                 var availableDishes = DishManager._GetDishes(order);
-                
+
                 var sortedDishes = DishManager._SortDishes(availableDishes, SortDirection.Ascending);
 
                 // TODO: Refactor
