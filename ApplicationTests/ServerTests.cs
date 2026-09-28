@@ -4,6 +4,7 @@ using Application.CommandLine;
 using Application.Mappers;
 using Application.Models;
 using Application.Parsers;
+using Application.Printers;
 using Application.Resolvers;
 using Application.Sorters;
 using Application.Validators;
@@ -42,7 +43,8 @@ namespace ApplicationTests
                 new IntParser(),
                 menuBuilder,
                 new MenuValidator(),
-                new OrderBuilder(dishDescriptorBuilder));
+                new OrderBuilder(dishDescriptorBuilder),
+                new DishPrinter());
         }
 
         [TearDown]

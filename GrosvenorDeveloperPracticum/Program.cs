@@ -3,6 +3,7 @@ using Application.Builders;
 using Application.CommandLine;
 using Application.Mappers;
 using Application.Parsers;
+using Application.Printers;
 using Application.Resolvers;
 using Application.Sorters;
 using Application.Validators;
@@ -42,7 +43,8 @@ namespace GrosvenorInHousePracticum
                 new IntParser(),
                 menuBuilder,
                 new MenuValidator(),
-                new OrderBuilder(dishDescriptorBuilder));
+                new OrderBuilder(dishDescriptorBuilder),
+                new DishPrinter());
 
             var output = server.TakeOrder(orderRequest);
 
