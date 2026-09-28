@@ -45,5 +45,5 @@ namespace Application
         {
             return DishSorter.Sort(dishes, sortDirection);
         }
-   }
+    }
 }
