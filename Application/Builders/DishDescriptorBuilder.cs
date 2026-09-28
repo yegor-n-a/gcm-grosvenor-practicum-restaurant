@@ -1,5 +1,6 @@
 ﻿using Application.Mappers;
 using Application.Models;
+using Application.Constraints;
 using Application.Resolvers;
 using System;
 
@@ -11,17 +12,20 @@ namespace Application.Builders
         private IDishTypeResolver DishTypeResolver { get; }
         private IDishNameToTypeMapper DishNameToTypeMapper { get; }
         private IDishTypeToPositionMapper DishTypeToPositionMapper { get; }
+        private IDishNameToConstraintsMapper DishNameToConstraintsMapper { get; }
 
         public DishDescriptorBuilder(
             IDishNameResolver dishNameResolver,
             IDishTypeResolver dishTypeResolver,
             IDishNameToTypeMapper dishNameToTypeMapper,
-            IDishTypeToPositionMapper dishTypeToPositionMapper)
+            IDishTypeToPositionMapper dishTypeToPositionMapper,
+            IDishNameToConstraintsMapper dishNameToConstraintsMapper)
         {
             DishNameResolver = dishNameResolver;
             DishTypeResolver = dishTypeResolver;
             DishNameToTypeMapper = dishNameToTypeMapper;
             DishTypeToPositionMapper = dishTypeToPositionMapper;
+            DishNameToConstraintsMapper = dishNameToConstraintsMapper;
         }
 
         public DishName BuildName(int dishId)
@@ -53,6 +57,11 @@ namespace Application.Builders
             return BuildPosition(typeValue);
         }
 
+        public DishConstraints BuildConstraints(DishName dishName)
+        {
+            return DishNameToConstraintsMapper.Map(dishName);
+        }
+
         public DishDescriptor Build(int dishId)
         {
             var dishName = BuildName(dishId);
@@ -67,11 +76,14 @@ namespace Application.Builders
 
             var position = BuildPosition(dishType);
 
+            var constraints = BuildConstraints(dishName);
+
             return new DishDescriptor
             {
                 Name = dishName,
                 Type = dishType,
-                Position = position
+                Position = position,
+                Constraints = constraints
             };
         }
     }

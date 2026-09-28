@@ -1,4 +1,5 @@
 ﻿using Application.Models.General;
+using Application.Constraints;
 
 namespace Application.Models
 {
@@ -6,5 +7,6 @@ namespace Application.Models
     {
         public DishType Type { get; set; }
         public decimal? Position { get; set; }
+        public DishConstraints Constraints { get; set; }
     }
 }
