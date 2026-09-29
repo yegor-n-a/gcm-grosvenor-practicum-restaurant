@@ -30,11 +30,6 @@ namespace Application
 
                 if (!validatedDish.IsValid)
                 {
-                    foreach (var error in validatedDish.Errors)
-                    {
-                        Console.WriteLine($"Invalid dish '{dish.Name}'. Error: {error.ErrorMessage}");
-                    }
-
                     var validationErrors = string.Join("; ", validatedDish.Errors.Select(error => error.ErrorMessage));
 
                     throw new ApplicationException($"Dish '{dish.Name}' failed validation: {validationErrors}");

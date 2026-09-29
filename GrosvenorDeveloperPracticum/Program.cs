@@ -31,8 +31,6 @@ namespace GrosvenorInHousePracticum
             );
 
             var dishDescriptorBuilder = new DishDescriptorBuilder(
-                new DishNameResolver(),
-                new DishTypeResolver(),
                 new DishNameToTypeMapper(),
                 new DishTypeToPositionMapper(),
                 new DishNameToConstraintsMapper()

@@ -31,8 +31,6 @@ namespace ApplicationTests
             );
 
             var dishDescriptorBuilder = new DishDescriptorBuilder(
-                new DishNameResolver(),
-                new DishTypeResolver(),
                 new DishNameToTypeMapper(),
                 new DishTypeToPositionMapper(),
                 new DishNameToConstraintsMapper()
@@ -60,6 +58,31 @@ namespace ApplicationTests
                 PartOfTheDay = PartOfTheDay.Evening.Name,
                 Order = order
             });
+        }
+
+        private OrderRequest CreateOrderRequest(string partOfTheDay, string order)
+        {
+            return new OrderRequest(new OrderCmdDetails
+            {
+                PartOfTheDay = partOfTheDay,
+                Order = order
+            });
+        }
+
+        [TestCase("morning", "1, 2, 3", "egg,toast,coffee")]
+        [TestCase("Morning", "3,3,3", "coffee(x3)")]
+        [TestCase("morning ", "1,3,2,3", "egg,toast,coffee(x2)")]
+        [TestCase("morning", "1, 2, 2", "error")]
+        [TestCase("morning", "1, 2, 4", "error")]
+        [TestCase("evening", "1, 2, 3, 4", "steak,potato,wine,cake")]
+        [TestCase("Evening", "1, 2, 2, 4", "steak,potato(x2),cake")]
+        [TestCase("evening", "1, 2, 3, 5", "error")]
+        [TestCase("evening", "1, 3, 2, 3", "error")]
+        public void SampleInputsOfExpectedOutput(string partOfTheDay, string order, string expected)
+        {
+            var actual = _sut.TakeOrder(CreateOrderRequest(partOfTheDay, order));
+
+            Assert.AreEqual(expected, actual);
         }
 
         [Test]

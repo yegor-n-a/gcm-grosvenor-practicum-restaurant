@@ -46,11 +46,6 @@ namespace Application
             {
                 if (!validatedItem.Value.IsValid)
                 {
-                    foreach (var error in validatedItem.Value.Errors)
-                    {
-                        Console.WriteLine(error);
-                    }
-
                     throw new ApplicationException($"Dish # {validatedItem.Key} is not available for order.");
                 }
             }
