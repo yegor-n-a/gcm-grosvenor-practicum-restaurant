@@ -6,6 +6,7 @@ using Application.Printers;
 using Application.Validators;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application
 {
@@ -34,13 +35,12 @@ namespace Application
             DishPrinter = dishPrinter;
         }
 
-        private IEnumerable<int> GetAvailableItems(string menuName, IEnumerable<int> orderedItemIds)
+        private IEnumerable<DishName> GetAvailableItems(string menuName, IEnumerable<int> orderedItemIds)
         {
             var menu = MenuBuilder.Build(menuName);
+            var orderedItems = orderedItemIds.ToList();
 
-            var validatedItems = MenuValidator.Validate(menu, orderedItemIds);
-
-            var availableItems = new List<int>();
+            var validatedItems = MenuValidator.Validate(menu, orderedItems);
 
             foreach (var validatedItem in validatedItems)
             {
@@ -50,29 +50,38 @@ namespace Application
                     {
                         Console.WriteLine(error);
                     }
-                }
-                else
-                {
-                    availableItems.Add(validatedItem.Key);
+
+                    throw new ApplicationException($"Dish # {validatedItem.Key} is not available for order.");
                 }
             }
 
-            return availableItems;
+            return orderedItems.Select(itemId => menu.Items[itemId]);
         }
 
         public string TakeOrder(OrderRequest orderRequest)
         {
-            var orderedItems = Parser.Parse(orderRequest.Order);
+            try
+            {
+                var orderedItems = Parser.Parse(orderRequest.Order);
 
-            var availableItems = GetAvailableItems(orderRequest.PartOfTheDay, orderedItems);
+                var availableItems = GetAvailableItems(orderRequest.PartOfTheDay, orderedItems);
 
-            var order = OrderBuilder.Build(availableItems);
+                var order = OrderBuilder.Build(availableItems);
 
-            var availableDishes = DishManager.GetDishes(order);
+                var availableDishes = DishManager.GetDishes(order);
 
-            var sortedDishes = DishManager.SortDishes(availableDishes, SortDirection.Ascending);
+                var sortedDishes = DishManager.SortDishes(availableDishes, SortDirection.Ascending);
 
-            return DishPrinter.Print(sortedDishes);
+                return DishPrinter.Print(sortedDishes);
+            }
+            catch (ApplicationException)
+            {
+                return "error";
+            }
+            catch (ArgumentException)
+            {
+                return "error";
+            }
         }
     }
 }

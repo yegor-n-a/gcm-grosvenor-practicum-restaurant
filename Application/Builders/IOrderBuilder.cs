@@ -3,5 +3,5 @@ using System.Collections.Generic;
 
 namespace Application.Builders
 {
-    public interface IOrderBuilder : IBuilder<Order<Dish>, IEnumerable<int>> { }
+    public interface IOrderBuilder : IBuilder<Order<Dish>, IEnumerable<DishName>> { }
 }

@@ -53,12 +53,21 @@ namespace ApplicationTests
 
         }
 
+        private OrderRequest CreateEveningOrderRequest(string order)
+        {
+            return new OrderRequest(new OrderCmdDetails
+            {
+                PartOfTheDay = PartOfTheDay.Evening.Name,
+                Order = order
+            });
+        }
+
         [Test]
         public void ErrorGetsReturnedWithBadInput()
         {
             var order = "one";
             string expected = "error";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -67,7 +76,7 @@ namespace ApplicationTests
         {
             var order = "1";
             string expected = "steak";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -76,7 +85,7 @@ namespace ApplicationTests
         {
             var order = "2,2";
             string expected = "potato(x2)";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -85,7 +94,7 @@ namespace ApplicationTests
         {
             var order = "1,2,3,4";
             string expected = "steak,potato,wine,cake";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -94,7 +103,7 @@ namespace ApplicationTests
         {
             var order = "1,2,2,4";
             string expected = "steak,potato(x2),cake";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -103,7 +112,7 @@ namespace ApplicationTests
         {
             var order = "1,2,3,5";
             string expected = "error";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
 
@@ -112,7 +121,7 @@ namespace ApplicationTests
         {
             var order = "1,1,2,3";
             string expected = "error";
-            var actual = _sut.TakeOrder(new OrderRequest(new OrderCmdDetails { Order = order }));
+            var actual = _sut.TakeOrder(CreateEveningOrderRequest(order));
             Assert.AreEqual(expected, actual);
         }
     }

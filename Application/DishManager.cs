@@ -5,6 +5,7 @@ using Application.Validators;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace Application
 {
@@ -33,6 +34,10 @@ namespace Application
                     {
                         Console.WriteLine($"Invalid dish '{dish.Name}'. Error: {error.ErrorMessage}");
                     }
+
+                    var validationErrors = string.Join("; ", validatedDish.Errors.Select(error => error.ErrorMessage));
+
+                    throw new ApplicationException($"Dish '{dish.Name}' failed validation: {validationErrors}");
                 }
                 else
                 {

@@ -8,7 +8,8 @@ namespace Application.Printers
     {
         public string Print(IEnumerable<Dish> dishes)
         {
-            return string.Join(",", dishes.Select(dish => $"{dish.Name.Name.ToLowerInvariant()}{GetMultiple(dish.Count)}"));
+            return string.Join(",", dishes.Select(dish =>
+                $"{dish.Name.Name.ToLowerInvariant()}{GetMultiple(dish.Count)}"));
         }
 
         private string GetMultiple(int count)

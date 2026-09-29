@@ -6,12 +6,12 @@ namespace Application.Models
 {
     public class Menu
     {
-        public ImmutableDictionary<int, string> Items { get; }
+        public ImmutableDictionary<int, DishName> Items { get; }
 
-        public Menu(IDictionary<int, string> items)
+        public Menu(IDictionary<int, DishName> items)
         {
             Items = items.IsNullOrEmpty()
-                ? ImmutableDictionary<int, string>.Empty
+                ? ImmutableDictionary<int, DishName>.Empty
                 : items.ToImmutableDictionary();
         }
     }

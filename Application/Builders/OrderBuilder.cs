@@ -16,39 +16,41 @@ namespace Application.Builders
             DishDescriptorBuilder = dishDescriptorBuilder;
         }
 
-        private IEnumerable<DishAggregate> AggregateDishes(IEnumerable<int> dishIds)
+        private IEnumerable<KeyValuePair<DishName, int>> AggregateDishes(IEnumerable<DishName> dishNames)
         {
-            var dishAggregates = new Dictionary<int, DishAggregate>();
+            var dishAggregates = new Dictionary<DishName, int>();
 
-            foreach (var dishId in dishIds)
+            foreach (var dishName in dishNames)
             {
-                if (dishAggregates.ContainsKey(dishId))
-                    dishAggregates[dishId].Count++;
+                if (dishAggregates.ContainsKey(dishName))
+                    dishAggregates[dishName]++;
                 else
-                    dishAggregates[dishId] = new DishAggregate { Id = dishId, Count = 1 };
+                    dishAggregates[dishName] = 1;
             }
 
-            return dishAggregates.Values;
+            return dishAggregates;
         }
 
-        public Order<Dish> Build(IEnumerable<int> dishIds)
+        public Order<Dish> Build(IEnumerable<DishName> dishNames)
         {
-            if (dishIds.IsNullOrEmpty())
-                throw new ArgumentOutOfRangeException(nameof(dishIds), "Order cannot be empty");
+            if (dishNames.IsNullOrEmpty())
+                throw new ArgumentOutOfRangeException(nameof(dishNames), "Order cannot be empty");
 
-            var aggregatedDishes = AggregateDishes(dishIds);
+            var aggregatedDishes = AggregateDishes(dishNames);
             var dishes = new List<Dish>(aggregatedDishes.Count());
 
             foreach (var dishAggregate in aggregatedDishes)
             {
-                var dishDescriptor = DishDescriptorBuilder.Build(dishAggregate.Id);
+                var dishName = dishAggregate.Key;
+                var dishType = DishDescriptorBuilder.BuildType(dishName);
 
                 var dish = new Dish
                 {
-                    Name = dishDescriptor.Name,
-                    Type = dishDescriptor.Type,
-                    Position = dishDescriptor.Position,
-                    Count = dishAggregate.Count
+                    Name = dishName,
+                    Type = dishType,
+                    Position = DishDescriptorBuilder.BuildPosition(dishType),
+                    Constraints = DishDescriptorBuilder.BuildConstraints(dishName),
+                    Count = dishAggregate.Value
                 };
 
                 dishes.Add(dish);
