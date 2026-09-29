@@ -1,13 +1,6 @@
 ﻿using Application;
-using Application.Builders;
 using Application.CommandLine;
-using Application.Mappers;
 using Application.Models;
-using Application.Parsers;
-using Application.Printers;
-using Application.Resolvers;
-using Application.Sorters;
-using Application.Validators;
 using NUnit.Framework;
 
 namespace ApplicationTests
@@ -15,34 +8,12 @@ namespace ApplicationTests
     [TestFixture]
     public class ServerTests
     {
-        private Server _sut;
+        private IServer _sut;
 
         [SetUp]
         public void Setup()
         {
-            var dishManager = new DishManager(
-                new DishValidator(),
-                new DishSorter()
-            );
-
-            var menuBuilder = new MenuBuilder(
-                new PartOfTheDayResolver(),
-                new PartOfTheDayToMenuItemsMapper()
-            );
-
-            var dishDescriptorBuilder = new DishDescriptorBuilder(
-                new DishNameToTypeMapper(),
-                new DishTypeToPositionMapper(),
-                new DishNameToConstraintsMapper()
-            );
-
-            _sut = new Server(
-                dishManager,
-                new IntParser(),
-                menuBuilder,
-                new MenuValidator(),
-                new OrderBuilder(dishDescriptorBuilder),
-                new DishPrinter());
+            _sut = ApplicationFactory.CreateServer();
         }
 
         [TearDown]
