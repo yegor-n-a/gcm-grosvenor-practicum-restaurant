@@ -85,6 +85,27 @@ namespace ApplicationTests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestCase("afternoon", "1")]
+        [TestCase("lunch", "1")]
+        [TestCase("", "1")]
+        [TestCase(" ", "1")]
+        [TestCase("evening", "0")]
+        [TestCase("evening", "-1")]
+        [TestCase("evening", "999")]
+        [TestCase("evening", "1,0,2")]
+        [TestCase("evening", "1,-1,2")]
+        [TestCase("evening", "1,999,2")]
+        [TestCase("evening", "")]
+        [TestCase("evening", " ")]
+        [TestCase("evening", ",")]
+        [TestCase("evening", ",,")]
+        public void OutOfScopeInputsReturnError(string partOfTheDay, string order)
+        {
+            var actual = _sut.TakeOrder(CreateOrderRequest(partOfTheDay, order));
+
+            Assert.AreEqual("error", actual);
+        }
+
         [Test]
         public void ErrorGetsReturnedWithBadInput()
         {
