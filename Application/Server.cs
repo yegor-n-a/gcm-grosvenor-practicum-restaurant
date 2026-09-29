@@ -1,4 +1,5 @@
 ﻿using Application.Builders;
+using Application.Exceptions;
 using Application.Models;
 using Application.Models.General;
 using Application.Parsers;
@@ -18,6 +19,8 @@ namespace Application
         public IMenuValidator MenuValidator { get; }
         public IOrderBuilder OrderBuilder { get; }
         public IDishPrinter DishPrinter { get; }
+
+        private string DefaultErrorMessage => "error";
 
         public Server(
             IDishManager dishManager,
@@ -46,7 +49,7 @@ namespace Application
             {
                 if (!validatedItem.Value.IsValid)
                 {
-                    throw new ApplicationException($"Dish # {validatedItem.Key} is not available for order.");
+                    throw new InvalidOrderException($"Dish # {validatedItem.Key} is not available for order.");
                 }
             }
 
@@ -69,13 +72,13 @@ namespace Application
 
                 return DishPrinter.Print(sortedDishes);
             }
-            catch (ApplicationException)
+            catch (InvalidOrderException)
             {
-                return "error";
+                return DefaultErrorMessage;
             }
             catch (ArgumentException)
             {
-                return "error";
+                return DefaultErrorMessage;
             }
         }
     }

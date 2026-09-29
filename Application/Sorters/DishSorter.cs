@@ -15,21 +15,23 @@ namespace Application.Sorters
             if (source.IsNullOrEmpty())
                 throw new ArgumentOutOfRangeException("Sorting failed: collection must contain at least one element");
 
-            var maxPosition = source.Max(x => x.Position) ?? 0;
+            var dishes = source.ToList();
+            var maxPosition = dishes.Max(x => x.Position) ?? 0;
 
-            source = source.Select(item =>
-            {
-                if (item.Position == null) item.Position = ++maxPosition;
-
-                return item;
-            });
+            var positionedDishes = dishes
+                .Select(dish => new
+                {
+                    Dish = dish,
+                    Position = dish.Position ?? ++maxPosition
+                })
+                .ToList();
 
             switch (sortDirection.Name)
             {
                 case nameof(SortDirection.Ascending):
-                    return source.OrderBy(x => x.Position).ToImmutableArray();
+                    return positionedDishes.OrderBy(x => x.Position).Select(x => x.Dish).ToImmutableArray();
                 case nameof(SortDirection.Descending):
-                    return source.OrderByDescending(x => x.Position).ToImmutableArray();
+                    return positionedDishes.OrderByDescending(x => x.Position).Select(x => x.Dish).ToImmutableArray();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sortDirection), "Invalid sort direction");
             }

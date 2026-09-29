@@ -1,4 +1,5 @@
-﻿using Application.Models;
+﻿using Application.Exceptions;
+using Application.Models;
 using Application.Models.General;
 using Application.Sorters;
 using Application.Validators;
@@ -32,7 +33,7 @@ namespace Application
                 {
                     var validationErrors = string.Join("; ", validatedDish.Errors.Select(error => error.ErrorMessage));
 
-                    throw new ApplicationException($"Dish '{dish.Name}' failed validation: {validationErrors}");
+                    throw new InvalidOrderException($"Dish '{dish.Name}' failed validation: {validationErrors}");
                 }
                 else
                 {

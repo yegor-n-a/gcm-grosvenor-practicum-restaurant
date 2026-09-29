@@ -50,11 +50,12 @@ namespace ApplicationTests
         }
 
         [Test]
-        public void SortAssignsMissingPositionsAfterKnownPositions()
+        public void SortMissingPositionsAfterKnownPositions()
         {
+            var coffee = new Dish { Name = DishName.Coffee, Position = null, Count = 1 };
             var dishes = new[]
             {
-                new Dish { Name = DishName.Coffee, Position = null, Count = 1 },
+                coffee,
                 new Dish { Name = DishName.Egg, Position = 1, Count = 1 }
             };
 
@@ -62,7 +63,7 @@ namespace ApplicationTests
 
             Assert.AreEqual(DishName.Egg, actual[0].Name);
             Assert.AreEqual(DishName.Coffee, actual[1].Name);
-            Assert.AreEqual(2, actual[1].Position);
+            Assert.IsNull(coffee.Position);
         }
 
         [Test]
