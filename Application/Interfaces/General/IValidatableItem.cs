@@ -1,10 +1,10 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
 
 namespace Application.Interfaces.General
 {
     public interface IValidatableItem<TError>
     {
-        ImmutableArray<TError> Errors { get; }
+        IReadOnlyCollection<TError> Errors { get; }
         bool IsValid { get; }
     }
 }

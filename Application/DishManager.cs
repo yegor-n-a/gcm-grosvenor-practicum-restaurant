@@ -46,7 +46,7 @@ namespace Application
             }
         }
 
-        public ImmutableSortedSet<Dish> SortDishes(IEnumerable<Dish> dishes, SortDirection sortDirection)
+        public ImmutableArray<Dish> SortDishes(IEnumerable<Dish> dishes, SortDirection sortDirection)
         {
             return DishSorter.Sort(dishes, sortDirection);
         }

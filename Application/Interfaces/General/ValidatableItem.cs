@@ -1,7 +1,5 @@
 ﻿using Application.Extensions;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 
 namespace Application.Interfaces.General
@@ -9,10 +7,10 @@ namespace Application.Interfaces.General
     public class ValidatableItem<TError> : IValidatableItem<TError>
         where TError : class
     {
-        protected ConcurrentBag<TError> Failures { get; }
+        protected List<TError> Failures { get; }
 
         public virtual bool IsValid => Errors.IsNullOrEmpty();
-        public virtual ImmutableArray<TError> Errors => Failures.ToImmutableArray();
+        public virtual IReadOnlyCollection<TError> Errors => Failures;
 
         public virtual void AddError(TError error)
         {
@@ -40,14 +38,14 @@ namespace Application.Interfaces.General
             }
         }
 
-        private ConcurrentBag<TError> CreateFailures(IEnumerable<TError> errors)
+        private List<TError> CreateFailures(IEnumerable<TError> errors)
         {
             errors = errors?
                 .Where(error => error != null);
 
             return errors.IsNullOrEmpty()
-                ? new ConcurrentBag<TError>()
-                : new ConcurrentBag<TError>(errors);
+                ? new List<TError>()
+                : new List<TError>(errors);
         }
 
         public ValidatableItem(TError error)

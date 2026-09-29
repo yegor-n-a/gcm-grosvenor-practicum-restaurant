@@ -8,6 +8,6 @@ namespace Application
     public interface IDishManager
     {
         IEnumerable<Dish> GetDishes(Order<Dish> order);
-        ImmutableSortedSet<Dish> SortDishes(IEnumerable<Dish> dishes, SortDirection sortDirection);
+        ImmutableArray<Dish> SortDishes(IEnumerable<Dish> dishes, SortDirection sortDirection);
     }
 }

@@ -10,16 +10,7 @@ namespace Application.Sorters
 {
     public class DishSorter : IDishSorter
     {
-        private static IComparer<Dish> Comparer { get; } = Comparer<Dish>.Create((first, second) =>
-        {
-            var positionComparison = Nullable.Compare(first?.Position, second?.Position);
-
-            return positionComparison != 0
-                ? positionComparison
-                : string.Compare(first?.Name?.Name, second?.Name?.Name, StringComparison.Ordinal);
-        });
-
-        public ImmutableSortedSet<Dish> Sort(IEnumerable<Dish> source, SortDirection sortDirection)
+        public ImmutableArray<Dish> Sort(IEnumerable<Dish> source, SortDirection sortDirection)
         {
             if (source.IsNullOrEmpty())
                 throw new ArgumentOutOfRangeException("Sorting failed: collection must contain at least one element");
@@ -36,9 +27,9 @@ namespace Application.Sorters
             switch (sortDirection.Name)
             {
                 case nameof(SortDirection.Ascending):
-                    return source.OrderBy(x => x.Position).ToImmutableSortedSet(Comparer);
+                    return source.OrderBy(x => x.Position).ToImmutableArray();
                 case nameof(SortDirection.Descending):
-                    return source.OrderByDescending(x => x.Position).ToImmutableSortedSet(Comparer);
+                    return source.OrderByDescending(x => x.Position).ToImmutableArray();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(sortDirection), "Invalid sort direction");
             }
