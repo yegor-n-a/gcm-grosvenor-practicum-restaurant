@@ -1,5 +1,5 @@
-﻿using Application.Extensions;
-using System;
+﻿using Application.Exceptions;
+using Application.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +19,7 @@ namespace Application.Parsers
             source = source?.Trim();
 
             if (string.IsNullOrWhiteSpace(source))
-                throw new ArgumentOutOfRangeException(nameof(source), "Input must be a comma separated list of numbers");
+                throw new InvalidOrderException("Input must be a comma separated list of numbers");
 
             separator = separator?.Trim();
 
@@ -29,7 +29,7 @@ namespace Application.Parsers
                 .Where(item => !string.IsNullOrWhiteSpace(item));
 
             if (items.IsNullOrEmpty())
-                throw new ArgumentOutOfRangeException(nameof(items), "Input must contain at least one number");
+                throw new InvalidOrderException("Input must contain at least one number");
 
             foreach (var item in items)
             {
@@ -38,7 +38,7 @@ namespace Application.Parsers
                 if (success)
                     yield return parsedItem;
                 else
-                    throw new ArgumentOutOfRangeException($"Parsing failed. Expected an integer, but received a '{item}'");
+                    throw new InvalidOrderException($"Parsing failed. Expected an integer, but received a '{item}'");
             }
         }
     }

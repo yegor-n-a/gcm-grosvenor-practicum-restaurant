@@ -1,8 +1,8 @@
-﻿using Application.Extensions;
+﻿using Application.Exceptions;
+using Application.Extensions;
 using Application.Mappers;
 using Application.Models;
 using Application.Resolvers;
-using System;
 
 namespace Application.Builders
 {
@@ -29,12 +29,12 @@ namespace Application.Builders
             var partOfTheDay = GetPartOfTheDay(name);
 
             if (partOfTheDay == null)
-                throw new ArgumentException($"Menu: '{name}' not found.");
+                throw new InvalidOrderException($"Menu: '{name}' not found.");
 
             var items = PartOfTheDayToMenuItemsMapper.Map(partOfTheDay);
 
             if (items.IsNullOrEmpty())
-                throw new ArgumentException($"Menu: '{name}' is not available.");
+                throw new InvalidOrderException($"Menu: '{name}' is not available.");
 
             return new Menu(items);
         }

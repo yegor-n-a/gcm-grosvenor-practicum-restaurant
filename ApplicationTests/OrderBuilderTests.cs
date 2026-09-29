@@ -1,8 +1,8 @@
 using Application.Builders;
+using Application.Exceptions;
 using Application.Mappers;
 using Application.Models;
 using NUnit.Framework;
-using System;
 using System.Linq;
 
 namespace ApplicationTests
@@ -67,7 +67,7 @@ namespace ApplicationTests
         [Test]
         public void BuildThrowsWhenDishNamesAreEmpty()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _sut.Build(Array.Empty<DishName>()));
+            Assert.Throws<InvalidOrderException>(() => _sut.Build(Enumerable.Empty<DishName>()));
         }
     }
 }

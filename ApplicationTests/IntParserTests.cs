@@ -1,6 +1,6 @@
+using Application.Exceptions;
 using Application.Parsers;
 using NUnit.Framework;
-using System;
 using System.Linq;
 
 namespace ApplicationTests
@@ -46,13 +46,13 @@ namespace ApplicationTests
         [TestCase(",")]
         public void ParseThrowsWhenInputDoesNotContainNumbers(string source)
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _sut.Parse(source).ToArray());
+            Assert.Throws<InvalidOrderException>(() => _sut.Parse(source).ToArray());
         }
 
         [Test]
         public void ParseThrowsWhenInputContainsNonIntegerValue()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => _sut.Parse("1,one,2").ToArray());
+            Assert.Throws<InvalidOrderException>(() => _sut.Parse("1,one,2").ToArray());
         }
     }
 }

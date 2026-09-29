@@ -1,9 +1,9 @@
 using Application.Builders;
+using Application.Exceptions;
 using Application.Mappers;
 using Application.Models;
 using Application.Resolvers;
 using NUnit.Framework;
-using System;
 
 namespace ApplicationTests
 {
@@ -49,7 +49,7 @@ namespace ApplicationTests
         [Test]
         public void BuildThrowsForUnsupportedPartOfTheDay()
         {
-            Assert.Throws<ArgumentException>(() => _sut.Build("lunch"));
+            Assert.Throws<InvalidOrderException>(() => _sut.Build("lunch"));
         }
 
         [Test]

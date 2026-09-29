@@ -77,6 +77,16 @@ namespace ApplicationTests
             Assert.AreEqual("error", actual);
         }
 
+        [TestCase("evening", "1,,2", "steak,potato")]
+        [TestCase("evening", ",1,2,", "steak,potato")]
+        [TestCase("morning", "1,,3", "egg,coffee")]
+        public void EmptyDelimitedEntriesAreIgnored(string partOfTheDay, string order, string expected)
+        {
+            var actual = _sut.TakeOrder(CreateOrderRequest(partOfTheDay, order));
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [Test]
         public void ErrorGetsReturnedWithBadInput()
         {

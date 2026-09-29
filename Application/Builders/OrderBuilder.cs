@@ -1,6 +1,6 @@
-﻿using Application.Extensions;
+﻿using Application.Exceptions;
+using Application.Extensions;
 using Application.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,7 +34,7 @@ namespace Application.Builders
         public Order<Dish> Build(IEnumerable<DishName> dishNames)
         {
             if (dishNames.IsNullOrEmpty())
-                throw new ArgumentOutOfRangeException(nameof(dishNames), "Order cannot be empty");
+                throw new InvalidOrderException("Order cannot be empty");
 
             var aggregatedDishes = AggregateDishes(dishNames);
             var dishes = new List<Dish>(aggregatedDishes.Count());

@@ -5,7 +5,6 @@ using Application.Models.General;
 using Application.Parsers;
 using Application.Printers;
 using Application.Validators;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -73,10 +72,6 @@ namespace Application
                 return DishPrinter.Print(sortedDishes);
             }
             catch (InvalidOrderException)
-            {
-                return DefaultErrorMessage;
-            }
-            catch (ArgumentException)
             {
                 return DefaultErrorMessage;
             }
