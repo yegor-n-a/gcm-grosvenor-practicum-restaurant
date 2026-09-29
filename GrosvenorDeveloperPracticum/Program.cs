@@ -17,7 +17,22 @@ namespace GrosvenorInHousePracticum
 
             var output = server.TakeOrder(orderRequest);
 
-            Console.WriteLine(output);
+            PrintABitFancier(output);
+        }
+
+        private static void PrintABitFancier(string output)
+        {
+            var originalColor = Console.ForegroundColor;
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = output == "error"
+                ? ConsoleColor.Red
+                : ConsoleColor.Green;
+
+            Console.WriteLine($"  {output}");
+            Console.ForegroundColor = originalColor;
+            Console.WriteLine();
         }
     }
 }
